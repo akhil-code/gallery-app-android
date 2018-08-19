@@ -16,12 +16,14 @@ public class MenuDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(MenuContract.SQL_CREATE_TABLE_ITEM);
         db.execSQL(MenuContract.SQL_CREATE_TABLE_CATEGORY);
+        db.execSQL(MenuContract.SQL_CREATE_TABLE_TAG);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL(MenuContract.SQL_DELETE_TABLE_ITEM);
-        db.execSQL(MenuContract.SQL_DELETE_TABLE_ITEM);
+        db.execSQL(MenuContract.SQL_DELETE_TABLE_CATEGORY);
+        db.execSQL(MenuContract.SQL_DELETE_TABLE_TAG);
         onCreate(db);
     }
 

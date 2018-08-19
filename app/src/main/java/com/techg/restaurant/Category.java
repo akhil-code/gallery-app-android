@@ -24,10 +24,14 @@ public class Category {
         this.id = id;
     }
 
-    public static long insertCategoryToDb(SQLiteDatabase db, Category category){
+    public static Category insertCategoryToDb(SQLiteDatabase db, String category_name){
         ContentValues values = new ContentValues();
-        values.put(MenuContract.Category.COLUMN_NAME_NAME, category.name);
-        return db.insert(MenuContract.Category.TABLE_NAME, null, values);
+        values.put(MenuContract.Category.COLUMN_NAME_NAME, category_name);
+        long category_id = db.insert(MenuContract.Category.TABLE_NAME, null, values);
+        if(category_id > 0){
+            return new Category(category_id, category_name);
+        }
+        else return null;
     }
 
     public static Category getCategory(SQLiteDatabase db, long id){
@@ -58,10 +62,10 @@ public class Category {
 
         if(name.equals(""))
             return null;
-        return new Category(name);
+        return new Category(id, name);
     }
 
-    public static ArrayList<Category> getCategories(SQLiteDatabase db){
+    public static ArrayList<Category> getAllCategories(SQLiteDatabase db){
         String[] projection = {
                 BaseColumns._ID,
                 MenuContract.Category.COLUMN_NAME_NAME,
