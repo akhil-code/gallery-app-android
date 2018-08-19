@@ -15,33 +15,24 @@ public class Item {
     // constructors
     public Item(){}
 
-    public Item(long id, String name, String price){
-        this(name, price);
-        setId(id);
-    }
-
     public Item(String name, String price){
         this.name = name;
         this.price = price;
     }
 
-    public Item(SQLiteDatabase db,String name, String price){
+    public Item(long id, String name, String price){
         this(name, price);
-        insertItemToDb(db);
-    }
-
-    public void setId(long id){
         this.id = id;
     }
 
-    private void insertItemToDb(SQLiteDatabase db){
+    public static long insertItemToDb(SQLiteDatabase db, Item item){
         ContentValues values = new ContentValues();
-        values.put(MenuContract.Item.COLUMN_NAME_NAME, this.name);
-        values.put(MenuContract.Item.COLUMN_NAME_PRICE, this.price);
-        setId(db.insert(MenuContract.Item.TABLE_NAME, null, values));
+        values.put(MenuContract.Item.COLUMN_NAME_NAME, item.name);
+        values.put(MenuContract.Item.COLUMN_NAME_PRICE, item.price);
+        return db.insert(MenuContract.Item.TABLE_NAME, null, values);
     }
 
-    public static Item getItem(SQLiteDatabase db, long id){
+    public static Item getItemFromDb(SQLiteDatabase db, long id){
         String[] projection = {
             BaseColumns._ID,
             MenuContract.Item.COLUMN_NAME_NAME,
@@ -69,10 +60,12 @@ public class Item {
         }
         cursor.close();
 
+        if(name.equals(""))
+            return null;
         return new Item(name, price);
     }
 
-    public static ArrayList<Item> getItems(SQLiteDatabase db){
+    public static ArrayList<Item> getItemsFromDb(SQLiteDatabase db){
         String[] projection = {
                 BaseColumns._ID,
                 MenuContract.Item.COLUMN_NAME_NAME,
@@ -102,4 +95,10 @@ public class Item {
         return items;
     }
 
+    public static long deleteItem(SQLiteDatabase db, long id){
+        // Define 'where' part of query.
+        String selection = BaseColumns._ID + " = ?";
+        String[] selectionArgs = { Long.toString(id) };
+        return db.delete(MenuContract.Item.TABLE_NAME, selection, selectionArgs);
+    }
 }

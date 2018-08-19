@@ -23,17 +23,13 @@ public class MainActivity extends AppCompatActivity {
         mDbHelper = new MenuDbHelper(getApplicationContext());
         db = mDbHelper.getWritableDatabase();
 
-        // fetching all rows
-//        TextView textView = (TextView) findViewById(R.id.textView);
-//        ArrayList<Item> items = Item.getItems(db);
-//        for(Item item : items){
-//            textView.setText(Long.toString(item.id));
-//        }
+
 
         // fetching single row
-         Item item = Item.getItem(db, 1);
+         Item item = Item.getItemFromDb(db, 2);
          TextView textView = (TextView) findViewById(R.id.textView);
-         textView.setText(item.name);
+         if(item != null)
+             textView.setText(item.name);
 
     }
 

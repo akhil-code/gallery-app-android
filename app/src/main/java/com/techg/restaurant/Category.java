@@ -15,28 +15,19 @@ public class Category {
     // constructors
     public Category(){}
 
-    public Category(long id, String name){
-        this(name);
-        setId(id);
-    }
-
     public Category(String name){
         this.name = name;
     }
 
-    public Category(SQLiteDatabase db,String name){
-        this(name);
-        insertCategoryToDb(db);
-    }
-
-    public void setId(long id){
+    public Category(long id, String name){
+        this.name = name;
         this.id = id;
     }
 
-    private void insertCategoryToDb(SQLiteDatabase db){
+    public static long insertCategoryToDb(SQLiteDatabase db, Category category){
         ContentValues values = new ContentValues();
-        values.put(MenuContract.Category.COLUMN_NAME_NAME, this.name);
-        setId(db.insert(MenuContract.Category.TABLE_NAME, null, values));
+        values.put(MenuContract.Category.COLUMN_NAME_NAME, category.name);
+        return db.insert(MenuContract.Category.TABLE_NAME, null, values);
     }
 
     public static Category getCategory(SQLiteDatabase db, long id){
@@ -59,12 +50,14 @@ public class Category {
                 null               // The sort order
         );
 
-        String name="", price="";
+        String name="";
         if(cursor.moveToFirst()){
             name = cursor.getString(cursor.getColumnIndex(MenuContract.Category.COLUMN_NAME_NAME));
         }
         cursor.close();
 
+        if(name.equals(""))
+            return null;
         return new Category(name);
     }
 
@@ -94,6 +87,13 @@ public class Category {
         cursor.close();
 
         return categories;
+    }
+
+    public static long deleteCategory(SQLiteDatabase db, long id){
+        // Define 'where' part of query.
+        String selection = BaseColumns._ID + " = ?";
+        String[] selectionArgs = { Long.toString(id) };
+        return db.delete(MenuContract.Category.TABLE_NAME, selection, selectionArgs);
     }
 
 }
