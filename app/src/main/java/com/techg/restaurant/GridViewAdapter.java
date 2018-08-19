@@ -14,9 +14,11 @@ public class GridViewAdapter extends BaseAdapter {
     private Context mContext;
     private SQLiteDatabase db;
     private ArrayList<Item> items;
+    private final String type;
     public GridViewAdapter(Context context, SQLiteDatabase db, String type) {
         mContext = context;
         this.db = db;
+        this.type = type;
 
         if(type.equals("allitems"))
             this.items = Item.getAllItemsFromDb(db);

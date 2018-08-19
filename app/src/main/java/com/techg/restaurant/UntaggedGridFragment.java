@@ -6,7 +6,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ public class UntaggedGridFragment extends Fragment {
     private SQLiteDatabase db;
     private MenuDbHelper menuDbHelper;
     private Context mContext;
+    String type;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,7 +32,7 @@ public class UntaggedGridFragment extends Fragment {
         this.menuDbHelper = new MenuDbHelper(getActivity());
         this.db = menuDbHelper.getWritableDatabase();
         // grid view initialisation
-        final String type = getArguments().getString("type");
+        type = getArguments().getString("type");
         GridView gridview = (GridView) view.findViewById(R.id.gridView);
         gridview.setAdapter(new GridViewAdapter(mContext, this.db, type));
         // on click listeners
@@ -47,7 +50,19 @@ public class UntaggedGridFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
                                            int position, long arg3) {
-                Toast.makeText(mContext, ""+position, Toast.LENGTH_SHORT).show();
+                if(type.equals("untagged")){
+
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+                    if (prev != null) {
+                        ft.remove(prev);
+                    }
+                    ft.addToBackStack(null);
+
+                    DialogFragment dialogFragment = new AddTagsFragment();
+                    dialogFragment.show(ft, "dialog");
+
+                }
                 return true;
             }
         });

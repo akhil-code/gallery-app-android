@@ -43,8 +43,8 @@ public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         Bundle args = new Bundle();
         if(position == 0)
             args.putString("type","allitems");
-        else if(position == 1)
-            args.putString("type","allitems");
+        else if(position == 2)
+            args.putString("type","untagged");
         else
             args.putString("type","untagged");
         UntaggedGridFragment fragment = new UntaggedGridFragment();
