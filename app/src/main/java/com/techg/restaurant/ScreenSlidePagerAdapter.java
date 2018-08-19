@@ -39,16 +39,19 @@ public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
             return fragment;
         }
 
-        // home page view pager
+        // all items and untagged grid view
         Bundle args = new Bundle();
-        if(position == 0)
-            args.putString("type","allitems");
-        else if(position == 2)
-            args.putString("type","untagged");
-        else
-            args.putString("type","untagged");
-        UntaggedGridFragment fragment = new UntaggedGridFragment();
-        fragment.setArguments(args);
+        if(position == 0 || position == 2){
+            String type = position == 0 ? "allitems" : "untagged";
+            args.putString("type", type);
+
+            UntaggedGridFragment fragment = new UntaggedGridFragment();
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        // category view (double recycler view)
+        TaggedView fragment = new TaggedView();
         return fragment;
     }
 

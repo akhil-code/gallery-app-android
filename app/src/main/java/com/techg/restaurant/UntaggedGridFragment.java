@@ -23,7 +23,7 @@ public class UntaggedGridFragment extends Fragment {
     String type;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         // inflating view
         View view = inflater.inflate(R.layout.fragment_untagged_grid, container, false);
@@ -59,7 +59,10 @@ public class UntaggedGridFragment extends Fragment {
                     }
                     ft.addToBackStack(null);
 
+                    Bundle args = new Bundle();
+                    args.putLong("item_id", position);
                     DialogFragment dialogFragment = new AddTagsFragment();
+                    dialogFragment.setArguments(args);
                     dialogFragment.show(ft, "dialog");
 
                 }

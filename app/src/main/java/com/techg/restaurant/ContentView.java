@@ -6,6 +6,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 
 import java.util.ArrayList;
 
@@ -30,11 +33,13 @@ public class ContentView extends AppCompatActivity {
         if(type.equals("allitems")){
             items = Item.getAllItemsFromDb(db);
         }
-        else if(type.equals("category")){
-            items = null;
-        }
         else if(type.equals("untagged")){
             items = Item.getAllUntaggedItemsFromDb(db);
+        }
+        else if(type.equals("category")){
+            long category_id = getIntent().getLongExtra("category_id",0);
+            Category category = Category.getCategory(db, category_id);
+            items = Item.getItemsOfCategoryFromDb(db, category);
         }
 
 
@@ -49,4 +54,8 @@ public class ContentView extends AppCompatActivity {
         mPager.setAdapter(mPagerAdapter);
         mPager.setCurrentItem(position);
     }
+    
+    
+
+
 }

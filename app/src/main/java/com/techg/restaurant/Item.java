@@ -95,11 +95,11 @@ public class Item {
         return items;
     }
 
-    public static ArrayList<Item> getItemsOfCategoryFromDb(SQLiteDatabase db, long category_id){
+    public static ArrayList<Item> getItemsOfCategoryFromDb(SQLiteDatabase db, Category category){
         Cursor cursor = db.rawQuery(
                 "SELECT * FROM "+MenuContract.Item.TABLE_NAME+" WHERE "+MenuContract.Item._ID+
-                    " IN (SELECT DISTINCT("+MenuContract.Item._ID+") FROM "+MenuContract.Tag.TABLE_NAME+
-                    " WHERE "+MenuContract.Tag.COLUMN_NAME_CATEGORY_ID+" = "+category_id+")",
+                    " IN (SELECT DISTINCT("+MenuContract.Tag.COLUMN_NAME_ITEM_ID+") FROM "+MenuContract.Tag.TABLE_NAME+
+                    " WHERE "+MenuContract.Tag.COLUMN_NAME_CATEGORY_ID+" = "+category.id+")",
                 null
         );
 

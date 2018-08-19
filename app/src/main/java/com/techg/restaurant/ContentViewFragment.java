@@ -23,8 +23,11 @@ public class ContentViewFragment extends Fragment {
         ImageView imageView = (ImageView) view.findViewById(R.id.content_image_view);
         int resid = context.getResources().getIdentifier(filename,"drawable",
                                                             context.getPackageName());
+
         getActivity().getApplicationContext();
         imageView.setImageResource(resid);
         return view;
     }
+
+
 }
