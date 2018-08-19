@@ -9,29 +9,30 @@ import java.util.ArrayList;
 
 public class Item {
     public long id;
-    public String name;
-    public String price;
+    public String name, price, filename;
 
     // constructors
     public Item(){}
 
-    public Item(String name, String price){
+    public Item(String name, String price, String filename){
         this.name = name;
         this.price = price;
+        this.filename = filename;
     }
 
-    public Item(long id, String name, String price){
-        this(name, price);
+    public Item(long id, String name, String price, String filename){
+        this(name, price, filename);
         this.id = id;
     }
 
     // Database functions
-    public static Item insertItemToDb(SQLiteDatabase db, String name, String price){
+    public static Item insertItemToDb(SQLiteDatabase db, String name, String price, String filename){
         ContentValues values = new ContentValues();
         values.put(MenuContract.Item.COLUMN_NAME_NAME, name);
         values.put(MenuContract.Item.COLUMN_NAME_PRICE, price);
+        values.put(MenuContract.Item.COLUMN_NAME_FILENAME, filename);
         long id = db.insert(MenuContract.Item.TABLE_NAME, null, values);
-        if(id > 0) return new Item(id, name, price);
+        if(id > 0) return new Item(id, name, price, filename);
         else return null;
     }
 
@@ -40,6 +41,7 @@ public class Item {
                 BaseColumns._ID,
                 MenuContract.Item.COLUMN_NAME_NAME,
                 MenuContract.Item.COLUMN_NAME_PRICE,
+                MenuContract.Item.COLUMN_NAME_FILENAME,
         };
         return projection;
     }
@@ -59,16 +61,17 @@ public class Item {
                 null               // The sort order
         );
 
-        String name="", price="";
+        String name="", price="", filename="";
         if(cursor.moveToFirst()){
             name = cursor.getString(cursor.getColumnIndex(MenuContract.Item.COLUMN_NAME_NAME));
             price = cursor.getString(cursor.getColumnIndex(MenuContract.Item.COLUMN_NAME_PRICE));
+            filename = cursor.getString(cursor.getColumnIndex(MenuContract.Item.COLUMN_NAME_FILENAME));
         }
         cursor.close();
 
         if(name.equals(""))
             return null;
-        return new Item(id, name, price);
+        return new Item(id, name, price, filename);
     }
 
     public static ArrayList<Item> getAllUntaggedItemsFromDb(SQLiteDatabase db){
@@ -84,7 +87,8 @@ public class Item {
             long id = cursor.getLong(cursor.getColumnIndex(BaseColumns._ID));
             String name = cursor.getString(cursor.getColumnIndex(MenuContract.Item.COLUMN_NAME_NAME));
             String price = cursor.getString(cursor.getColumnIndex(MenuContract.Item.COLUMN_NAME_PRICE));
-            items.add(new Item(id, name, price));
+            String filename = cursor.getString(cursor.getColumnIndex(MenuContract.Item.COLUMN_NAME_FILENAME));
+            items.add(new Item(id, name, price, filename));
         }
         cursor.close();
 
@@ -104,7 +108,8 @@ public class Item {
             long id = cursor.getLong(cursor.getColumnIndex(BaseColumns._ID));
             String name = cursor.getString(cursor.getColumnIndex(MenuContract.Item.COLUMN_NAME_NAME));
             String price = cursor.getString(cursor.getColumnIndex(MenuContract.Item.COLUMN_NAME_PRICE));
-            items.add(new Item(id, name, price));
+            String filename = cursor.getString(cursor.getColumnIndex(MenuContract.Item.COLUMN_NAME_FILENAME));
+            items.add(new Item(id, name, price, filename));
         }
         cursor.close();
 
@@ -130,7 +135,8 @@ public class Item {
             long id = cursor.getLong(cursor.getColumnIndex(BaseColumns._ID));
             String name = cursor.getString(cursor.getColumnIndex(MenuContract.Item.COLUMN_NAME_NAME));
             String price = cursor.getString(cursor.getColumnIndex(MenuContract.Item.COLUMN_NAME_PRICE));
-            items.add(new Item(id, name, price));
+            String filename = cursor.getString(cursor.getColumnIndex(MenuContract.Item.COLUMN_NAME_FILENAME));
+            items.add(new Item(id, name, price, filename));
         }
         cursor.close();
 

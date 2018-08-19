@@ -10,6 +10,7 @@ public class MenuContract {
         public static final String TABLE_NAME = "item";
         public static final String COLUMN_NAME_NAME = "name";
         public static final String COLUMN_NAME_PRICE = "price";
+        public static final String COLUMN_NAME_FILENAME = "filename";
     }
 
     // Category table schema
@@ -30,7 +31,8 @@ public class MenuContract {
                     "CREATE TABLE IF NOT EXISTS " + Item.TABLE_NAME + " (" +
                     Item._ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                     Item.COLUMN_NAME_NAME + " TEXT UNIQUE," +
-                    Item.COLUMN_NAME_PRICE + " TEXT)";
+                    Item.COLUMN_NAME_PRICE + " TEXT ," +
+                    Item.COLUMN_NAME_FILENAME + " TEXT)";
 
     public static final String SQL_CREATE_TABLE_CATEGORY =
             "CREATE TABLE IF NOT EXISTS " + Category.TABLE_NAME + " (" +
