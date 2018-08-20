@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +17,16 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
-public class UntaggedGridFragment extends Fragment {
+public class UntaggedGridFragment extends Fragment{
     private SQLiteDatabase db;
     private MenuDbHelper menuDbHelper;
     private Context mContext;
     String type;
+
+    private GridView gridView;
+    private GridViewAdapter mAdapter;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
@@ -33,10 +39,14 @@ public class UntaggedGridFragment extends Fragment {
         this.db = menuDbHelper.getWritableDatabase();
         // grid view initialisation
         type = getArguments().getString("type");
-        GridView gridview = (GridView) view.findViewById(R.id.gridView);
-        gridview.setAdapter(new GridViewAdapter(mContext, this.db, type));
+        gridView = (GridView) view.findViewById(R.id.gridView);
+        mAdapter = new GridViewAdapter(mContext, this.db, type);
+        gridView.setAdapter(mAdapter);
+
+
+
         // on click listeners
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Intent intent = new Intent(getActivity().getApplicationContext(), ContentView.class);
                 intent.putExtra("position",position);
@@ -46,7 +56,7 @@ public class UntaggedGridFragment extends Fragment {
         });
 
         // on long click listener
-        gridview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
                                            int position, long arg3) {
@@ -66,11 +76,18 @@ public class UntaggedGridFragment extends Fragment {
                     dialogFragment.show(ft, "dialog");
 
                 }
+                Log.d("mytag", "after add tags");
                 return true;
             }
         });
 
         return view;
+    }
+
+    public void update(){
+        mAdapter.notifyDataSetChanged();
+        mAdapter = new GridViewAdapter(mContext, this.db, type);
+        gridView.setAdapter(mAdapter);
     }
 
 }

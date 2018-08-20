@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AddTagsFragment.onSubmitListener {
 
 
     @Override
@@ -31,10 +31,9 @@ public class MainActivity extends AppCompatActivity {
         Item.insertItemToDb(db, "Bear","180","img6");
         Item.insertItemToDb(db, "Parrot","120","img7");
 
-        Category category = Category.insertCategoryToDb(db, "Mammals");
-        if(item != null && category != null){
-            Tag.insertTagToDb(db, item, category);
-        }
+        Category.insertCategoryToDb(db, "Mammals");
+        Category.insertCategoryToDb(db, "Birds");
+
 
         // Instantiate a ViewPager and a PagerAdapter.
         ViewPager mPager = (ViewPager) findViewById(R.id.pager);
@@ -46,7 +45,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
-
+    @Override
+    public void onSubmit() {
+        UntaggedGridFragment fragment = (UntaggedGridFragment) getSupportFragmentManager().findFragmentById(R.id.gridView);
+        if(fragment != null){
+            fragment.update();
+        }
+    }
 }

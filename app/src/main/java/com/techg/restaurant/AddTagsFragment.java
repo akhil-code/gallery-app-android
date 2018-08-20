@@ -1,11 +1,11 @@
 package com.techg.restaurant;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,6 +21,8 @@ public class AddTagsFragment extends DialogFragment {
     private Context context;
     public static ArrayList<CheckBox> checkBoxes = new ArrayList<>();
     SQLiteDatabase db;
+    private onSubmitListener listener;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,7 +66,25 @@ public class AddTagsFragment extends DialogFragment {
             }
         }
 
+        checkBoxes.clear();
+        listener.onSubmit();
         this.dismiss();
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            listener = (onSubmitListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
+
+    }
+
+    public interface onSubmitListener {
+        public void onSubmit();
     }
 
 }
