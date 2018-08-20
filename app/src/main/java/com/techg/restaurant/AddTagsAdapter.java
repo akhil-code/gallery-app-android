@@ -19,6 +19,7 @@ public class AddTagsAdapter extends RecyclerView.Adapter<AddTagsAdapter.ViewHold
     private SQLiteDatabase db;
     private Context context;
     private ArrayList<Category> categories;
+    private ArrayList<CheckBox> checkBoxes = new ArrayList<>();
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public AddTagsAdapter(SQLiteDatabase db, Context context) {
@@ -54,8 +55,12 @@ public class AddTagsAdapter extends RecyclerView.Adapter<AddTagsAdapter.ViewHold
             super(v);
             this.view = v;
             this.checkBox = (CheckBox) v.findViewById(R.id.checkBox_item);
-            AddTagsFragment.checkBoxes.add(this.checkBox);
+            checkBoxes.add(this.checkBox);
         }
+    }
+
+    public ArrayList<CheckBox> getCheckboxes(){
+        return this.checkBoxes;
     }
 
 }

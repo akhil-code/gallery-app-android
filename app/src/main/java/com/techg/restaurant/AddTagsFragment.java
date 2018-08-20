@@ -19,9 +19,8 @@ import java.util.ArrayList;
 
 public class AddTagsFragment extends DialogFragment {
     private Context context;
-    public static ArrayList<CheckBox> checkBoxes = new ArrayList<>();
     SQLiteDatabase db;
-    private onSubmitListener listener;
+    AddTagsAdapter mAdapter;
 
 
     @Override
@@ -38,7 +37,7 @@ public class AddTagsFragment extends DialogFragment {
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
-        AddTagsAdapter mAdapter = new AddTagsAdapter(db, context);
+        mAdapter = new AddTagsAdapter(db, context);
         recyclerView.setAdapter(mAdapter);
 
         Button button = view.findViewById(R.id.add_tags_button);
@@ -54,37 +53,23 @@ public class AddTagsFragment extends DialogFragment {
 
     public void addTags(View v){
         long item_id = getArguments().getLong("item_id");
+        Log.d("mytag", "item_id: "+item_id);
         Item item = Item.getItemFromDb(db,item_id);
 
-        Log.d("mytag", ""+checkBoxes.size());
+        ArrayList<CheckBox> checkBoxes = mAdapter.getCheckboxes();
+        Log.d("mytag", "checkboxes: "+checkBoxes.size());
 
         for(int i=0; i<checkBoxes.size(); i++){
-            Log.d("mytag", checkBoxes.get(i).getText().toString());
+            Log.d("mytag", "box-> "+checkBoxes.get(i).getText().toString());
             if(checkBoxes.get(i).isChecked()){
+                Log.d("mytag", "addTags: selected");
                 Category category = Category.getAllCategories(db).get(i);
                 Tag.insertTagToDb(db, item, category);
             }
         }
 
         checkBoxes.clear();
-        listener.onSubmit();
         this.dismiss();
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            listener = (onSubmitListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnHeadlineSelectedListener");
-        }
-
-    }
-
-    public interface onSubmitListener {
-        public void onSubmit();
     }
 
 }

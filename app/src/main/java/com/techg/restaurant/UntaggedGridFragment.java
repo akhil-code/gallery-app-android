@@ -17,6 +17,8 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class UntaggedGridFragment extends Fragment{
     private SQLiteDatabase db;
     private MenuDbHelper menuDbHelper;
@@ -25,7 +27,7 @@ public class UntaggedGridFragment extends Fragment{
 
     private GridView gridView;
     private GridViewAdapter mAdapter;
-
+    private ArrayList<Item> items;
 
 
     @Override
@@ -43,6 +45,12 @@ public class UntaggedGridFragment extends Fragment{
         mAdapter = new GridViewAdapter(mContext, this.db, type);
         gridView.setAdapter(mAdapter);
 
+        if(type.equals("untagged")){
+            items = Item.getAllUntaggedItemsFromDb(db);
+        }
+        else{
+            items = Item.getAllItemsFromDb(db);
+        }
 
 
         // on click listeners
@@ -70,7 +78,7 @@ public class UntaggedGridFragment extends Fragment{
                     ft.addToBackStack(null);
 
                     Bundle args = new Bundle();
-                    args.putLong("item_id", position);
+                    args.putLong("item_id", items.get(position).id);
                     DialogFragment dialogFragment = new AddTagsFragment();
                     dialogFragment.setArguments(args);
                     dialogFragment.show(ft, "dialog");

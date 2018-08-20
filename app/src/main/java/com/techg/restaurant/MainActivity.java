@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements AddTagsFragment.onSubmitListener {
+public class MainActivity extends AppCompatActivity{
 
 
     @Override
@@ -45,11 +45,4 @@ public class MainActivity extends AppCompatActivity implements AddTagsFragment.o
 
     }
 
-    @Override
-    public void onSubmit() {
-        UntaggedGridFragment fragment = (UntaggedGridFragment) getSupportFragmentManager().findFragmentById(R.id.gridView);
-        if(fragment != null){
-            fragment.update();
-        }
-    }
 }
