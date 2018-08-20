@@ -21,6 +21,7 @@ public class AddTagsFragment extends DialogFragment {
     private Context context;
     SQLiteDatabase db;
     AddTagsAdapter mAdapter;
+    private addTagListener listener;
 
 
     @Override
@@ -53,23 +54,39 @@ public class AddTagsFragment extends DialogFragment {
 
     public void addTags(View v){
         long item_id = getArguments().getLong("item_id");
-        Log.d("mytag", "item_id: "+item_id);
         Item item = Item.getItemFromDb(db,item_id);
-
         ArrayList<CheckBox> checkBoxes = mAdapter.getCheckboxes();
-        Log.d("mytag", "checkboxes: "+checkBoxes.size());
 
         for(int i=0; i<checkBoxes.size(); i++){
-            Log.d("mytag", "box-> "+checkBoxes.get(i).getText().toString());
             if(checkBoxes.get(i).isChecked()){
-                Log.d("mytag", "addTags: selected");
                 Category category = Category.getAllCategories(db).get(i);
                 Tag.insertTagToDb(db, item, category);
             }
         }
 
         checkBoxes.clear();
+        listener.tagsAdded();
         this.dismiss();
     }
+
+
+
+    // Container Activity must implement this interface
+    public interface addTagListener {
+        public void tagsAdded();
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            listener = (addTagListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
+    }
+
+
 
 }

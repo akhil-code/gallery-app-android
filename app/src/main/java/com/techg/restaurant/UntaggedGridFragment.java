@@ -84,7 +84,6 @@ public class UntaggedGridFragment extends Fragment{
                     dialogFragment.show(ft, "dialog");
 
                 }
-                Log.d("mytag", "after add tags");
                 return true;
             }
         });
@@ -93,9 +92,12 @@ public class UntaggedGridFragment extends Fragment{
     }
 
     public void update(){
-        mAdapter.notifyDataSetChanged();
-        mAdapter = new GridViewAdapter(mContext, this.db, type);
-        gridView.setAdapter(mAdapter);
+        Fragment curr = getFragmentManager().findFragmentById(R.id.fragment_gridview);
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(curr);
+        ft.attach(curr);
+        ft.commit();
+
     }
 
 }
