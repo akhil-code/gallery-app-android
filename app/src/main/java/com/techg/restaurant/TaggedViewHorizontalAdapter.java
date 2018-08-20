@@ -4,6 +4,10 @@ package com.techg.restaurant;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,6 +56,13 @@ public class TaggedViewHorizontalAdapter extends RecyclerView.Adapter<TaggedView
                 intent.putExtra("type", "category");
                 intent.putExtra("category_id", category.id);
                 context.startActivity(intent);
+            }
+        });
+        holder.imageView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Toast.makeText(context, ""+position,Toast.LENGTH_LONG).show();
+                return true;
             }
         });
     }

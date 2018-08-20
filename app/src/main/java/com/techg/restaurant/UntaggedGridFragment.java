@@ -91,13 +91,4 @@ public class UntaggedGridFragment extends Fragment{
         return view;
     }
 
-    public void update(){
-        Fragment curr = getFragmentManager().findFragmentById(R.id.fragment_gridview);
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.detach(curr);
-        ft.attach(curr);
-        ft.commit();
-
-    }
-
 }
