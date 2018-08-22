@@ -85,10 +85,10 @@ public class Category {
         return getCategoriesFromCursor(cursor);
     }
 
-    public static long deleteCategory(SQLiteDatabase db, long id){
+    public static long deleteCategory(SQLiteDatabase db, long category_id){
         // Define 'where' part of query.
         String selection = BaseColumns._ID + " = ?";
-        String[] selectionArgs = { Long.toString(id) };
+        String[] selectionArgs = { Long.toString(category_id) };
         return db.delete(MenuContract.Category.TABLE_NAME, selection, selectionArgs);
     }
 

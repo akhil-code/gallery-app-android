@@ -3,6 +3,7 @@ package com.techg.restaurant;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
@@ -15,7 +16,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements  AddTagsFragment.addTagListener{
+public class MainActivity extends AppCompatActivity implements  AddTagsFragment.addTagListener,
+        AddCategoryFragment.AddNewTagListener, DeleteAlertFragment.DeleteCategoryListener{
     ViewPager mPager;
 
     @Override
@@ -36,10 +38,22 @@ public class MainActivity extends AppCompatActivity implements  AddTagsFragment.
 
     }
 
+    public void reloadAdapter(){
+        mPager.getAdapter().notifyDataSetChanged();
+    }
+
     // refreshes pages when new tags are added
     @Override
     public void tagsAdded() {
-        mPager.getAdapter().notifyDataSetChanged();
+        reloadAdapter();
+    }
+
+    @Override
+    public void newTagAdded(){ reloadAdapter(); }
+
+    @Override
+    public void onDeleteCategory() {
+        reloadAdapter();
     }
 
     // adds data to database
@@ -60,4 +74,6 @@ public class MainActivity extends AppCompatActivity implements  AddTagsFragment.
         Category.insertCategoryToDb(db, "Mammals");
         Category.insertCategoryToDb(db, "Birds");
     }
+
+
 }

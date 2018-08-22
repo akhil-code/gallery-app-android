@@ -68,23 +68,21 @@ public class UntaggedGridFragment extends Fragment{
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
                                            int position, long arg3) {
-                if(type.equals("untagged")){
 
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-                    if (prev != null) {
-                        ft.remove(prev);
-                    }
-                    ft.addToBackStack(null);
-
-                    Bundle args = new Bundle();
-                    args.putLong("item_id", items.get(position).id);
-                    args.putBoolean("editMode", false);
-                    DialogFragment dialogFragment = new AddTagsFragment();
-                    dialogFragment.setArguments(args);
-                    dialogFragment.show(ft, "dialog");
-
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+                if (prev != null) {
+                    ft.remove(prev);
                 }
+                ft.addToBackStack(null);
+
+                Bundle args = new Bundle();
+                args.putLong("item_id", items.get(position).id);
+                args.putBoolean("editMode", false);
+                DialogFragment dialogFragment = new AddTagsFragment();
+                dialogFragment.setArguments(args);
+                dialogFragment.show(ft, "dialog_edit_tags");
+
                 return true;
             }
         });

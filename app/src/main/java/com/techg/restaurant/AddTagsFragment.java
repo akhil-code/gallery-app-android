@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -103,7 +105,17 @@ public class AddTagsFragment extends DialogFragment {
     }
 
     public void newCategoryDialog(View view){
-        Toast.makeText(context, "new Category field", Toast.LENGTH_LONG).show();
+
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog_edit_tags");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        DialogFragment dialogFragment = new AddCategoryFragment();
+        dialogFragment.show(ft, "dialog");
+
     }
 
 

@@ -77,11 +77,13 @@ public class TaggedViewHorizontalAdapter extends RecyclerView.Adapter<TaggedView
                 args.putBoolean("editMode", true);
                 DialogFragment dialogFragment = new AddTagsFragment();
                 dialogFragment.setArguments(args);
-                dialogFragment.show(ft, "dialog");
+                dialogFragment.show(ft, "dialog_edit_tags");
 
                 return true;
             }
         });
+
+
     }
 
     @Override

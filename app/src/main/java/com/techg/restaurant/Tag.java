@@ -104,4 +104,10 @@ public class Tag {
         String[] selectionArgs = { Long.toString(item_id), Long.toString(category_id) };
         return db.delete(MenuContract.Tag.TABLE_NAME, selection, selectionArgs);
     }
+
+    public static long deleteTagsOfCategory(SQLiteDatabase db, long category_id){
+        String selection = MenuContract.Tag.COLUMN_NAME_CATEGORY_ID + " = ? ";
+        String[] selectionArgs = { Long.toString(category_id) };
+        return db.delete(MenuContract.Tag.TABLE_NAME, selection, selectionArgs);
+    }
 }

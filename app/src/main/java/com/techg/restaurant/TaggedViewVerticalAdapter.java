@@ -1,8 +1,11 @@
 package com.techg.restaurant;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -39,6 +42,17 @@ public class TaggedViewVerticalAdapter extends RecyclerView.Adapter<TaggedViewVe
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.title.setText(categories.get(position).name);
+        holder.title.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+                DialogFragment newFragment = DeleteAlertFragment.newInstance("Delete Category", categories.get(position).id);
+                newFragment.show(fm, "dialog");
+
+                return true;
+            }
+        });
+
 
         holder.horizontalRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
