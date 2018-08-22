@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -24,16 +25,18 @@ public class TaggedViewHorizontalAdapter extends RecyclerView.Adapter<TaggedView
     private ArrayList<Item> items;
     private Category category;
     private Context context;
+    private FragmentManager fm;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public TaggedViewHorizontalAdapter(SQLiteDatabase db, Category category, Context context) {
+    public TaggedViewHorizontalAdapter(SQLiteDatabase db, Category category, Context context, FragmentManager fm) {
         this.db = db;
         this.category = category;
         if(db != null)
             this.items = Item.getItemsOfCategoryFromDb(db, category);
 
-        this.context = context;
         this.category = category;
+        this.context = context;
+        this.fm = fm;
     }
 
     @Override
@@ -61,7 +64,21 @@ public class TaggedViewHorizontalAdapter extends RecyclerView.Adapter<TaggedView
         holder.imageView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                Toast.makeText(context, ""+position,Toast.LENGTH_LONG).show();
+
+                FragmentTransaction ft = fm.beginTransaction();
+                Fragment prev = fm.findFragmentByTag("dialog");
+                if (prev != null) {
+                    ft.remove(prev);
+                }
+                ft.addToBackStack(null);
+
+                Bundle args = new Bundle();
+                args.putLong("item_id", items.get(position).id);
+                args.putBoolean("editMode", true);
+                DialogFragment dialogFragment = new AddTagsFragment();
+                dialogFragment.setArguments(args);
+                dialogFragment.show(ft, "dialog");
+
                 return true;
             }
         });

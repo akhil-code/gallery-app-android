@@ -16,16 +16,18 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class AddTagsAdapter extends RecyclerView.Adapter<AddTagsAdapter.ViewHolder> {
-    private SQLiteDatabase db;
-    private Context context;
     private ArrayList<Category> categories;
     private ArrayList<CheckBox> checkBoxes = new ArrayList<>();
+    private long items_checked;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public AddTagsAdapter(SQLiteDatabase db, Context context) {
-        this.db = db;
-        this.context = context;
-        this.categories = Category.getAllCategories(db);
+    public AddTagsAdapter(SQLiteDatabase db, Context context, long item_id) {
+        // fetch categories checked and unchecked and merge them
+        ArrayList<Category> categories_checked = Category.getCategoriesOfItem(db, item_id, true);
+        ArrayList<Category> categories_unchecked = Category.getCategoriesOfItem(db, item_id, false);
+        this.items_checked = categories_checked.size();
+        categories_checked.addAll(categories_unchecked);
+        categories = categories_checked;
     }
 
     @Override
@@ -39,6 +41,8 @@ public class AddTagsAdapter extends RecyclerView.Adapter<AddTagsAdapter.ViewHold
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.checkBox.setText(categories.get(position).name);
+        if(position < items_checked)
+            holder.checkBox.setChecked(true);
     }
 
     @Override
@@ -60,7 +64,12 @@ public class AddTagsAdapter extends RecyclerView.Adapter<AddTagsAdapter.ViewHold
     }
 
     public ArrayList<CheckBox> getCheckboxes(){
-        return this.checkBoxes;
+        return checkBoxes;
     }
-
+    public long getNumberOfCheckedItems(){
+        return items_checked;
+    }
+    public ArrayList<Category> getCategories() {
+        return categories;
+    }
 }

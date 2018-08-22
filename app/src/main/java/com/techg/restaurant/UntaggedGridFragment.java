@@ -79,6 +79,7 @@ public class UntaggedGridFragment extends Fragment{
 
                     Bundle args = new Bundle();
                     args.putLong("item_id", items.get(position).id);
+                    args.putBoolean("editMode", false);
                     DialogFragment dialogFragment = new AddTagsFragment();
                     dialogFragment.setArguments(args);
                     dialogFragment.show(ft, "dialog");

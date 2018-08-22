@@ -99,10 +99,9 @@ public class Tag {
     }
 
 
-    public static long deleteTag(SQLiteDatabase db, long id){
-        // Define 'where' part of query.
-        String selection = BaseColumns._ID + " = ?";
-        String[] selectionArgs = { Long.toString(id) };
+    public static long deleteTag(SQLiteDatabase db, long item_id, long category_id){
+        String selection = MenuContract.Tag.COLUMN_NAME_ITEM_ID + " = ? AND " + MenuContract.Tag.COLUMN_NAME_CATEGORY_ID + " = ? ";
+        String[] selectionArgs = { Long.toString(item_id), Long.toString(category_id) };
         return db.delete(MenuContract.Tag.TABLE_NAME, selection, selectionArgs);
     }
 }

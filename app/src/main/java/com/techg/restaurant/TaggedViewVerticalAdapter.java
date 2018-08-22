@@ -2,6 +2,7 @@ package com.techg.restaurant;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,13 +17,15 @@ public class TaggedViewVerticalAdapter extends RecyclerView.Adapter<TaggedViewVe
     private SQLiteDatabase db;
     private ArrayList<Category> categories;
     private Context context;
+    private FragmentManager fm;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public TaggedViewVerticalAdapter(SQLiteDatabase db, Context context) {
+    public TaggedViewVerticalAdapter(SQLiteDatabase db, Context context, FragmentManager fm) {
         this.db = db;
         if(db != null)
             categories = Category.getAllCategories(db);
         this.context = context;
+        this.fm = fm;
     }
 
     @Override
@@ -40,7 +43,7 @@ public class TaggedViewVerticalAdapter extends RecyclerView.Adapter<TaggedViewVe
         holder.horizontalRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         holder.horizontalRecyclerView.setLayoutManager(layoutManager);
-        RecyclerView.Adapter horizontalAdapter = new TaggedViewHorizontalAdapter(db, categories.get(position), context);
+        RecyclerView.Adapter horizontalAdapter = new TaggedViewHorizontalAdapter(db, categories.get(position), context, fm);
         holder.horizontalRecyclerView.setAdapter(horizontalAdapter);
     }
 

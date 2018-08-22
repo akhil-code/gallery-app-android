@@ -32,7 +32,7 @@ public class TaggedView extends Fragment {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new TaggedViewVerticalAdapter(db, context);
+        mAdapter = new TaggedViewVerticalAdapter(db, context, getFragmentManager());
         recyclerView.setAdapter(mAdapter);
 
         return view;

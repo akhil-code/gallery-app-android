@@ -23,8 +23,31 @@ public class MainActivity extends AppCompatActivity implements  AddTagsFragment.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // adding data to Database
+        addContent();
+
+        // Instantiate a ViewPager and a PagerAdapter.
+        mPager = (ViewPager) findViewById(R.id.pager);
+        PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), 3, true, null);
+        mPager.setAdapter(mPagerAdapter);
+        // shows titles of pages in view pager
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        tabLayout.setupWithViewPager(mPager);
+
+    }
+
+    // refreshes pages when new tags are added
+    @Override
+    public void tagsAdded() {
+        mPager.getAdapter().notifyDataSetChanged();
+    }
+
+    // adds data to database
+    void addContent(){
+        // database objects
         MenuDbHelper menuDbHelper = new MenuDbHelper(getApplicationContext());
         SQLiteDatabase db = menuDbHelper.getWritableDatabase();
+
         // add content data
         Item.insertItemToDb(db, "Cat","150","img1");
         Item.insertItemToDb(db, "Dog","450","img2");
@@ -36,20 +59,5 @@ public class MainActivity extends AppCompatActivity implements  AddTagsFragment.
 
         Category.insertCategoryToDb(db, "Mammals");
         Category.insertCategoryToDb(db, "Birds");
-
-
-        // Instantiate a ViewPager and a PagerAdapter.
-        mPager = (ViewPager) findViewById(R.id.pager);
-        PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), 3, true, null);
-        mPager.setAdapter(mPagerAdapter);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        tabLayout.setupWithViewPager(mPager);
-
-    }
-
-    @Override
-    public void tagsAdded() {
-        mPager.getAdapter().notifyDataSetChanged();
     }
 }

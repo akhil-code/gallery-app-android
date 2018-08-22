@@ -82,6 +82,29 @@ public class Category {
                 null               // The sort order
         );
 
+        return getCategoriesFromCursor(cursor);
+    }
+
+    public static long deleteCategory(SQLiteDatabase db, long id){
+        // Define 'where' part of query.
+        String selection = BaseColumns._ID + " = ?";
+        String[] selectionArgs = { Long.toString(id) };
+        return db.delete(MenuContract.Category.TABLE_NAME, selection, selectionArgs);
+    }
+
+    public static ArrayList<Category> getCategoriesOfItem(SQLiteDatabase db, long item_id, boolean included){
+        String SQL_QUERY = "SELECT * FROM " + MenuContract.Category.TABLE_NAME
+                                + " WHERE " + MenuContract.Category._ID;
+        if(!included) SQL_QUERY += " NOT";
+        SQL_QUERY += " IN ( SELECT DISTINCT(" + MenuContract.Tag.COLUMN_NAME_CATEGORY_ID +
+                                ") FROM " + MenuContract.Tag.TABLE_NAME + " WHERE " +
+                                   MenuContract.Tag.COLUMN_NAME_ITEM_ID + " = " + item_id + ")";
+        Cursor cursor = db.rawQuery(SQL_QUERY,null);
+        return getCategoriesFromCursor(cursor);
+    }
+
+
+    private static ArrayList<Category> getCategoriesFromCursor(Cursor cursor){
         ArrayList<Category> categories = new ArrayList<>();
         while(cursor.moveToNext()){
             long id = cursor.getLong(cursor.getColumnIndex(BaseColumns._ID));
@@ -92,13 +115,5 @@ public class Category {
 
         return categories;
     }
-
-    public static long deleteCategory(SQLiteDatabase db, long id){
-        // Define 'where' part of query.
-        String selection = BaseColumns._ID + " = ?";
-        String[] selectionArgs = { Long.toString(id) };
-        return db.delete(MenuContract.Category.TABLE_NAME, selection, selectionArgs);
-    }
-
 }
 
