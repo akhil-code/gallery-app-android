@@ -1,7 +1,9 @@
 package com.techg.restaurant;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
@@ -18,7 +20,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements  AddTagsFragment.addTagListener,
         AddCategoryFragment.AddNewTagListener, DeleteAlertFragment.DeleteCategoryListener{
-    ViewPager mPager;
+    private ViewPager mPager;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,13 +31,39 @@ public class MainActivity extends AppCompatActivity implements  AddTagsFragment.
         // adding data to Database
         addContent();
 
+
+
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) findViewById(R.id.pager);
         PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), 3, true, null);
         mPager.setAdapter(mPagerAdapter);
+
         // shows titles of pages in view pager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(mPager);
+
+        // shared Pref.
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        // shared pref. common to entire application
+        mPager.setCurrentItem(sharedPreferences.getInt("position_home",0));
+
+        String redirect = sharedPreferences.getString("activity",null);
+
+        if(redirect.equals("content")){
+            Intent intent = new Intent(this, ContentView.class);
+            // type
+            String type = sharedPreferences.getString("type", "allitems");
+            intent.putExtra("type", type);
+            // position
+            int position = sharedPreferences.getInt("position_content", 0);
+            intent.putExtra("position", position);
+            // category
+            if(type.equals("category")){
+                long category_id = sharedPreferences.getLong("category_id", 0);
+                intent.putExtra("category_id", category_id);
+            }
+            startActivity(intent);
+        }
 
     }
 
@@ -75,5 +104,22 @@ public class MainActivity extends AppCompatActivity implements  AddTagsFragment.
         Category.insertCategoryToDb(db, "Birds");
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("activity", "home");
+        editor.commit();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("position_home", mPager.getCurrentItem());
+        editor.commit();
+    }
 }

@@ -2,9 +2,11 @@ package com.techg.restaurant;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -45,13 +47,8 @@ public class UntaggedGridFragment extends Fragment{
         mAdapter = new GridViewAdapter(mContext, this.db, type);
         gridView.setAdapter(mAdapter);
 
-        if(type.equals("untagged")){
-            items = Item.getAllUntaggedItemsFromDb(db);
-        }
-        else{
-            items = Item.getAllItemsFromDb(db);
-        }
-
+        items = type.equals("untagged") ?
+                Item.getAllUntaggedItemsFromDb(db) : Item.getAllItemsFromDb(db) ;
 
         // on click listeners
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
