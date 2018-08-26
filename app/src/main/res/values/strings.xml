@@ -1,9 +1,8 @@
 <resources>
-    <string name="app_name">Gallery</string>
+    <string name="app_name">My Gallery</string>
 
     <string name="add_category_hint">New Category name</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="alert_dialog_two_buttons_title">Delete Category</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

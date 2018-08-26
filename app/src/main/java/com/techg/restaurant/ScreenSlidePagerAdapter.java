@@ -51,7 +51,7 @@ public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
             String type = position == 0 ? "allitems" : "untagged";
             args.putString("type", type);
 
-            UntaggedGridFragment fragment = new UntaggedGridFragment();
+            RecyclerGridFragment fragment = new RecyclerGridFragment();
             fragment.setArguments(args);
             return fragment;
         }

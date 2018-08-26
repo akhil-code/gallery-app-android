@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements  AddTagsFragment.
 
         String redirect = sharedPreferences.getString("activity",null);
 
-        if(redirect.equals("content")){
+        if(redirect != null && redirect.equals("content")){
             Intent intent = new Intent(this, ContentView.class);
             // type
             String type = sharedPreferences.getString("type", "allitems");
