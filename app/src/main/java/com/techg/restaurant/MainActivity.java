@@ -31,8 +31,6 @@ public class MainActivity extends AppCompatActivity implements  AddTagsFragment.
         // adding data to Database
         addContent();
 
-
-
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) findViewById(R.id.pager);
         PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), 3, true, null);
@@ -92,16 +90,11 @@ public class MainActivity extends AppCompatActivity implements  AddTagsFragment.
         SQLiteDatabase db = menuDbHelper.getWritableDatabase();
 
         // add content data
-        Item.insertItemToDb(db, "Cat","150","img1");
-        Item.insertItemToDb(db, "Dog","450","img2");
-        Item item = Item.insertItemToDb(db, "Deer","250","img3");
-        Item.insertItemToDb(db, "Elephant","100","img4");
-        Item.insertItemToDb(db, "Chimpanzee","10","img5");
-        Item.insertItemToDb(db, "Bear","180","img6");
-        Item.insertItemToDb(db, "Parrot","120","img7");
+        for(int i=1;i<=100;i++){
+            String filename = "img"+i;
+            Item.insertItemToDb(db, filename,filename,filename);
+        }
 
-        Category.insertCategoryToDb(db, "Mammals");
-        Category.insertCategoryToDb(db, "Birds");
     }
 
     @Override
