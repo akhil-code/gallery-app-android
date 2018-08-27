@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:text="CheckBox"
+        android:textColor="@android:color/darker_gray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

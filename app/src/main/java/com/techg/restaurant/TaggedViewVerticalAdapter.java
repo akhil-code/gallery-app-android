@@ -42,6 +42,12 @@ public class TaggedViewVerticalAdapter extends RecyclerView.Adapter<TaggedViewVe
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.title.setText(categories.get(position).name);
+        ArrayList<Item> items = Item.getItemsOfCategoryFromDb(db, categories.get(position));
+        if(items.size() == 0)
+            holder.view.setVisibility(View.INVISIBLE);
+        else
+            holder.view.setVisibility(View.VISIBLE);
+
         holder.title.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
